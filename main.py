@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-gc = gspread.service_account(os.environ.get('GOOGLE_JSON_KEY'))
+gc = gspread.authorize(os.environ.get('GOOGLE_JSON_KEY'))
 wks = gspread.open("ElectcionsDB").sheet1
 
 @app.get("/")
