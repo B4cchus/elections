@@ -9,7 +9,7 @@ key_data = json.loads(sheets_key)
 
 @app.get("/")
 async def root():
-    return {"message": {"Hello World", key_data["type"]}}
+    return {"message": "Hello World", key_data["type"]}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
