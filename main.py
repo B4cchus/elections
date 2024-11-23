@@ -5,7 +5,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 gc = gspread.service_account_from_dict(json.loads(os.environ.get('GOOGLE_JSON_KEY')))
-wks = gc.open("ElectcionsDB").sheet1
+wks = gc.open("ElectionsDB").sheet1
 
 @app.get("/")
 async def root():
