@@ -9,7 +9,7 @@ wks = gc.open("ElectionsDB").sheet1
 
 @app.get("/")
 async def root():
-    wks.update_acell('A1', datetime.datetime.now())
+    wks.update_acell('A1', str(datetime.datetime.now()))
     return {"message": datetime.datetime.now()}
 
 @app.get("/items/{item_id}")
