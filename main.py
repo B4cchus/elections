@@ -5,7 +5,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 gc = gspread.service_account_from_dict(json.loads(os.environ.get('GOOGLE_JSON_KEY')))
-wks = gc.open("ElectionsDB").sheet1
+sh = gc.open("ElectionsDB")
 
 @app.get("/")
 async def root():
@@ -14,7 +14,7 @@ async def root():
 
 @app.get("/elections/{election_id}")
 async def cands():
-    return {"cands": gc.named_range(election_id+"_cds")}
+    return {"cands": sh.named_range(election_id+"_cds")}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
