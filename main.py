@@ -13,7 +13,7 @@ async def root():
     return {"message": datetime.datetime.now()}
 
 @app.get("/elections/{election_id}")
-async def cands():
+async def cands(election_id: str):
     return {"cands": sh.named_range(election_id+"_cds")}
 
 @app.get("/items/{item_id}")
