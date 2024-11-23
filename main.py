@@ -12,6 +12,10 @@ async def root():
     wks.update_acell('A1', str(datetime.datetime.now()))
     return {"message": datetime.datetime.now()}
 
+@app.get("/elections/{election_id}")
+async def cands():
+    return {"cands": gc.named_range(election_id+"_cds")}
+
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
