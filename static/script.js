@@ -2,7 +2,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const ballotId = urlParams.get('id');
 const cds = new URLSearchParams(window.location.search).get("cds");
-const candidates = cds ? cds.slice(1, -1).split(',').map(item => item.trim()) : [];
+const candidates = cds ? cds.split(',').map(item => item.trim()) : [];
 
 // DOM elements
 const candidateList = document.getElementById('candidate-list');
