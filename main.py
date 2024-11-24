@@ -19,7 +19,7 @@ async def root():
 @app.get("/vote")
 async def vote(election_id: str = "test_election"):
     cds = ",".join(cd.value for cd in sh.named_range(election_id+"_cds"))
-    return RedirectResponse(url="/static/index.html?cds="+cds)
+    return RedirectResponse(url="/static/index.html?cds="+cds+"&id="+election_id)
 
 @app.get("/view")
 async def cands(election_id: str = "test_election"):

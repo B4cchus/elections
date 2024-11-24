@@ -1,6 +1,7 @@
 // Fetch candidate names dynamically
 const cds = new URLSearchParams(window.location.search).get("cds");
 const candidates = cds ? cds.split(',').map(item => item.trim()) : [];
+const election_id = new URLSearchParams(window.location.search).get("id");
 
 // DOM elements
 const candidateList = document.getElementById('candidate-list');
@@ -88,3 +89,4 @@ submitBallot.onclick = () => {
 
 // Initialize
 renderCandidates();
+document.getElementById("header").textContent = "Бюллетень для ".concat(election_id);
