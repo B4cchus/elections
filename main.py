@@ -23,7 +23,7 @@ async def vote(election_id: str = "test_election"):
 
 @app.get("/view")
 async def cands(election_id: str = "test_election"):
-    return {json.loads(cd)["value"] for cd in sh.named_range(election_id+"_cds")}
+    return {cd.value() for cd in sh.named_range(election_id+"_cds")}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Optional[str] = None):
