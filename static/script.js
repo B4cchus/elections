@@ -3,6 +3,9 @@ const cds = new URLSearchParams(window.location.search).get("cds");
 const candidates = cds ? cds.split(',').map(item => item.trim()) : [];
 const election_id = new URLSearchParams(window.location.search).get("id");
 
+//Submission endpoint
+const submit_url = "https://elections-44da.onrender.com/submit_vote"
+
 // DOM elements
 const candidateList = document.getElementById('candidate-list');
 const rankPopup = document.getElementById('rank-popup');
@@ -74,17 +77,36 @@ function reassignRank(name, newRank) {
 function removeCandidate(name) {
   rankedCandidates = rankedCandidates.filter(c => c !== name);
   rankPopup.classList.add('hidden');
-  renderCandidates();
+  renderCandidates();s
 }
 
 // Submit the ballot
 submitBallot.onclick = () => {
   const ballotData = {
-    ballotId,
+    election_id,
     rankedCandidates
   };
   console.log('Submitting ballot:', ballotData);
-  // You can send the data to your server here using fetch or XMLHttpRequest
+  
+  fetch(submit_url.concat("?id=", election_id, "&cds=", rankedCandidates.join(",")), {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Content-Length": 0,
+    }
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+  })
+  .then(responseData => {
+      console.log("Response from server:", responseData);
+  })
+  .catch(error => {
+      console.error("Error during the POST request:", error);
+  });
 };
 
 // Initialize
