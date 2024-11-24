@@ -1,0 +1,110 @@
+/* General reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+  }
+  
+  /* Ballot container */
+  #ballot-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  #candidate-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Candidate boxes */
+  .candidate-box {
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    background-color: grey;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .candidate-box.ranked {
+    background-color: green;
+  }
+  
+  /* Submit button */
+  #submit-ballot {
+    width: 100%;
+    height: 50px;
+    margin-top: 20px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #submit-ballot:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Pop-up styling */
+  #rank-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  
+  #rank-popup.hidden {
+    display: none;
+  }
+  
+  #rank-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .rank-option {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .rank-option:hover {
+    background-color: #0056b3;
+  }
+  
+  .rank-remove {
+    display: block;
+    margin-top: 10px;
+    color: red;
+    cursor: pointer;
+  }
+  
