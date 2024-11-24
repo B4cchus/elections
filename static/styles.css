@@ -21,6 +21,7 @@ body, html {
   #candidate-list {
     display: flex;
     flex-direction: column;
+    max-width: 600px;
     gap: 10px;
   }
   
