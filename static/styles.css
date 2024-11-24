@@ -11,6 +11,8 @@ body, html {
   #ballot-container {
     padding: 20px;
     text-align: center;
+    max-width: 600px;
+    margin: auto;
   }
   
   h1 {
@@ -21,7 +23,6 @@ body, html {
   #candidate-list {
     display: flex;
     flex-direction: column;
-    max-width: 600px;
     gap: 10px;
   }
   
