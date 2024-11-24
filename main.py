@@ -2,6 +2,7 @@ from typing import Optional
 import os, json, gspread, datetime
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ async def root():
 
 @app.get("/vote")
 async def vote(election_id: str = "test_election"):
-    return {"Nothing here": None}
+    return RedirectResponse(url="/static/index.html?election="+election_id)
 
 @app.get("/view")
 async def cands(election_id: str = "test_election"):
