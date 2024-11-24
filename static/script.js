@@ -1,7 +1,8 @@
 // Fetch unique ID and candidate names dynamically (mock data for now)
 const urlParams = new URLSearchParams(window.location.search);
 const ballotId = urlParams.get('id');
-const candidates = ["Alice", "Bob", "Charlie", "Dana", "Eve"];
+const cds = new URLSearchParams(window.location.search).get("cds");
+const candidates = cds ? cds.slice(1, -1).split(',').map(item => item.trim()) : [];
 
 // DOM elements
 const candidateList = document.getElementById('candidate-list');
