@@ -88,7 +88,7 @@ submitBallot.onclick = () => {
   };
   console.log('Submitting ballot:', ballotData);
   
-  fetch(submit_url.concat("?id=", election_id, "&cds=", rankedCandidates.join(",")), {
+  fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(",")), {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
