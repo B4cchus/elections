@@ -26,3 +26,9 @@ async def vote(election_id: str = "test_election"):
 async def cands(election_id: str = "test_election"):
     return {"candidates": [cd.value for cd in sh.named_range(election_id+"_cds")],
             "voters": [cd.value for cd in sh.named_range(election_id+"_vrs")]}
+
+@app.get("/submit_vote", status_code=201)
+async def submit_vote(election_id: str, cds: str):
+    start = sh.worksheet("Results").find(election_id)
+    response = sh.values_append(start.address, {"value_input_option": "USER_ENTERED"}, {"values": cds})
+    return response
