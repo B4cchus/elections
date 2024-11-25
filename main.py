@@ -11,6 +11,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 gc = gspread.service_account_from_dict(json.loads(os.environ.get('GOOGLE_JSON_KEY')))
 sh = gc.open("ElectionsDB")
 
+#Root endpoint does nothing for now except record date of access in the DB
 @app.get("/")
 async def root():
     sh.sheet1.update_acell('A1', str(datetime.datetime.now()))
@@ -25,7 +26,3 @@ async def vote(election_id: str = "test_election"):
 async def cands(election_id: str = "test_election"):
     return {"candidates": [cd.value for cd in sh.named_range(election_id+"_cds")],
             "voters": [cd.value for cd in sh.named_range(election_id+"_vrs")]}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
