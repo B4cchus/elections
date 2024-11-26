@@ -30,5 +30,5 @@ async def cands(election_id: str = "test_election"):
 @app.post("/submit_vote", status_code=201)
 async def submit_vote(election_id: str, cds: str):
     start = sh.worksheet("Results").find(election_id)
-    response = sh.values_append(start.address, {"value_input_option": "USER_ENTERED"}, {"values": [[cds]]})
+    response = sh.values_append("Results!"+start.address, {"value_input_option": "RAW"}, {"values": [[cds]]})
     return response
