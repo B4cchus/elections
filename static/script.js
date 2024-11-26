@@ -82,11 +82,9 @@ function removeCandidate(name) {
 
 // Submit the ballot
 submitBallot.onclick = () => {
-  const ballotData = {
-    election_id,
-    rankedCandidates
-  };
-  console.log('Submitting ballot:', ballotData);
+  submitBallot.textContent = "Submitting...";
+  submitBallot.disabled = "true";
+  console.log('Submitting ballot:', [election_id, rankedCandidates]);
   
   fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(",")), {
     method: "POST",
@@ -98,11 +96,14 @@ submitBallot.onclick = () => {
   .then(response => {
       if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
+          submitBallot.textContent = "Failed!";
+          submitBallot.style.color = "red";
       }
-      return response.json();
+      return response.text;
   })
   .then(responseData => {
       console.log("Response from server:", responseData);
+      submitBallot.textContent = "Submitted!";
   })
   .catch(error => {
       console.error("Error during the POST request:", error);
