@@ -77,7 +77,7 @@ function reassignRank(name, newRank) {
 function removeCandidate(name) {
   rankedCandidates = rankedCandidates.filter(c => c !== name);
   rankPopup.classList.add('hidden');
-  renderCandidates();s
+  renderCandidates();
 }
 
 // Submit the ballot
@@ -99,7 +99,7 @@ submitBallot.onclick = () => {
           submitBallot.textContent = "Failed!";
           submitBallot.style.color = "red";
       }
-      return response.text;
+      return response.json();
   })
   .then(responseData => {
       console.log("Response from server:", responseData);
