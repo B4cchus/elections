@@ -96,7 +96,7 @@ submitBallot.onclick = () => {
 
   let pwd_hash = pwd.value;
   for (let i = 0; i < 10; i++) {
-    pwd_hash = await sha256(pwd_hash);
+    pwd_hash = sha256(pwd_hash);
   }
   
   fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(","), "vr_id=", pwd_hash), {
