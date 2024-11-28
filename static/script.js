@@ -4,7 +4,7 @@ const candidates = cds ? cds.split(',').map(item => item.trim()) : [];
 const election_id = new URLSearchParams(window.location.search).get("id");
 
 //Submission endpoint
-const submit_url = "https://elections-44da.onrender.com/submit_vote"
+const submit_url = "/submit_vote"
 
 // DOM elements
 const candidateList = document.getElementById('candidate-list');
