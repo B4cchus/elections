@@ -82,21 +82,21 @@ function removeCandidate(name) {
 }
 
 // Submit the ballot
-function sha256(message) {
+async function sha256(message) {
   const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-submitBallot.onclick = () => {
+submitBallot.onclick = async () => {
   submitBallot.textContent = "Отправляю...";
-  submitBallot.disabled = "true";
+  submitBallot.disabled = true;
   console.log('Submitting ballot:', [election_id, rankedCandidates]);
 
   let pwd_hash = pwd.value;
   for (let i = 0; i < 10; i++) {
-    pwd_hash = sha256(pwd_hash);
+    pwd_hash = await sha256(pwd_hash);
   }
   
   fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(","), "&vr_id=", pwd_hash), {
