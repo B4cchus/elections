@@ -11,6 +11,7 @@ const candidateList = document.getElementById('candidate-list');
 const rankPopup = document.getElementById('rank-popup');
 const rankPopupContent = document.getElementById('rank-popup-content');
 const submitBallot = document.getElementById('submit-ballot');
+const pwd = document.getElementById("pwd");
 
 // State management
 let rankedCandidates = [];
@@ -81,32 +82,45 @@ function removeCandidate(name) {
 }
 
 // Submit the ballot
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 submitBallot.onclick = () => {
-  submitBallot.textContent = "Submitting...";
+  submitBallot.textContent = "Отправляю...";
   submitBallot.disabled = "true";
   console.log('Submitting ballot:', [election_id, rankedCandidates]);
+
+  let pwd_hash = pwd.value;
+  for (let i = 0; i < 10; i++) {
+    pwd_hash = await sha256(pwd_hash);
+  }
   
-  fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(",")), {
+  fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(","), "vr_id=", pwd_hash), {
     method: "POST",
     headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         "Content-Length": 0,
     }
   })
   .then(response => {
       if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-          submitBallot.textContent = "Failed!";
-          submitBallot.style.color = "red";
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.json();
   })
   .then(responseData => {
       console.log("Response from server:", responseData);
-      submitBallot.textContent = "Submitted!";
+      submitBallot.textContent = "Отправлено!";
+      submitBallot.style.backgroundColor = "green";
   })
   .catch(error => {
       console.error("Error during the POST request:", error);
+      submitBallot.textContent = "Не удалось!";
+      submitBallot.style.backgroundColor = "red";
   });
 };
 

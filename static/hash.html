@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHA256 Ten-fold Hash</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: auto;
+            min-width: 300px;
+        }
+        h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Создание идентификатора избирателя</h1>
+        <input type="text" id="inputText" placeholder="Enter text (10-16 chars)">
+        <div id="error" class="error"></div>
+        <button onclick="computeHash()">Создать</button>
+        <div id="result" class="result"></div>
+        <div id="instruction">Сохраните введеное значение, отправьте сгенерированное</div>
+    </div>
+
+    <script>
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function computeHash() {
+            const input = document.getElementById("inputText").value;
+            const error = document.getElementById("error");
+            const result = document.getElementById("result");
+
+            // Clear previous error or result
+            error.textContent = "";
+            result.textContent = "";
+
+            // Validate input
+            const regex = /^.{10,16}$/;
+            if (!regex.test(input)) {
+                error.textContent = "Input must be 10 to 16 characters long.";
+                return;
+            }
+
+            // Compute ten-fold SHA256 hash
+            let hash = input;
+            for (let i = 0; i < 10; i++) {
+                hash = await sha256(hash);
+            }
+
+            // Display the result
+            result.textContent = hash;
+        }
+    </script>
+</body>
+</html>
