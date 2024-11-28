@@ -34,7 +34,7 @@ async def cands(election_id: str = "test_election"):
 @app.post("/submit_vote", status_code=201)
 async def submit_vote(election_id: str, cds: str, vr_id: str):
     vr = sh.worksheet("Set-up").find(vr_id, in_column = sh.worksheet("Set-up").find(election_id).col)
-    if not vr or not vr_id:
+    if (not vr) or (not vr_id):
         raise HTTPException(status_code=404, detail="Voter not found")
     start = sh.worksheet("Results").find(election_id)
     response = sh.values_append("Results!"+start.address, {"value_input_option": "RAW"}, {"values": [[cds]]})
