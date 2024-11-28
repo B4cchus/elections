@@ -99,7 +99,7 @@ submitBallot.onclick = () => {
     pwd_hash = sha256(pwd_hash);
   }
   
-  fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(","), "vr_id=", pwd_hash), {
+  fetch(submit_url.concat("?election_id=", election_id, "&cds=", rankedCandidates.join(","), "&vr_id=", pwd_hash), {
     method: "POST",
     headers: {
         "Content-Type": "application/x-www-form-urlencoded",
