@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHA256 Ten-fold Hash</title>
+    <title>Регистрационная форма</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,8 +20,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: auto;
-            min-width: 300px;
+            width: 510px;
         }
         h1 {
             font-size: 18px;
@@ -29,9 +28,11 @@
             text-align: center;
         }
         input {
-            width: 100%;
+            width: calc(100% - 30px);
+            display: inline-block;
             padding: 10px;
             margin-bottom: 10px;
+            margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
@@ -49,7 +50,18 @@
         button:hover {
             background: #0056b3;
         }
+        svg {
+            display: inline-block;
+            vertical-align: text-bottom;
+            width: 24px; 
+            height: 24px;
+            fill: none;
+        }
+        svg:hover {
+            background: lightblue;
+        }
         .result {
+            display: inline-block;
             margin-top: 15px;
             margin-bottom: 20px;
             padding: 10px;
@@ -69,14 +81,41 @@
 <body>
     <div class="container">
         <h1>Создание идентификатора избирателя</h1>
-        <input type="text" id="inputText" placeholder="Enter text (10-16 chars)">
+        <div>Пароль: </div>
+        <input type="text" id="pwd">
+        <svg xmlns="http://www.w3.org/2000/svg" id="copyicon" onclick="copyInput(document.getElementById('pwd').value)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path>
+        </svg>
         <div id="error" class="error"></div>
-        <button onclick="computeHash()">Создать</button>
+        <button onclick="computeHash()">Создать идентификатор</button>
         <div id="result" class="result"></div>
-        <div id="instruction">Сохраните введеное значение, отправьте сгенерированное</div>
+        <svg xmlns="http://www.w3.org/2000/svg" id="copyicon" onclick="copyInput(document.getElementById('result').innerText)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path>
+        </svg>
+        <div id="instruction">Сохраните пароль в тайне, поделитесь созданным идентификатором</div>
     </div>
 
     <script>
+        function copyInput(text) {
+            navigator.clipboard.writeText(text);
+        };
+
+        function generateRandomPassword() {
+            const length = crypto.getRandomValues(new Uint8Array(1))[0] % 5 + 12; // Random length between 12 and 16
+            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?";
+            const charactersLength = characters.length;
+            let password = "";
+
+            const randomBuffer = new Uint8Array(length);
+            crypto.getRandomValues(randomBuffer);
+
+            for (let i = 0; i < length; i++) {
+                password += characters[randomBuffer[i] % charactersLength];
+            }
+            
+            document.getElementById("pwd").value = password;
+        }
+
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -85,7 +124,7 @@
         }
 
         async function computeHash() {
-            const input = document.getElementById("inputText").value;
+            const input = document.getElementById("pwd").value;
             const error = document.getElementById("error");
             const result = document.getElementById("result");
 
@@ -94,9 +133,9 @@
             result.textContent = "";
 
             // Validate input
-            const regex = /^.{10,16}$/;
+            const regex = /^.{10,30}$/;
             if (!regex.test(input)) {
-                error.textContent = "Input must be 10 to 16 characters long.";
+                error.textContent = "Input must be 10 to 30 characters long.";
                 return;
             }
 
@@ -109,6 +148,8 @@
             // Display the result
             result.textContent = hash;
         }
+        generateRandomPassword();
+        computeHash();
     </script>
 </body>
 </html>
