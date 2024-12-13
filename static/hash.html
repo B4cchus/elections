@@ -1,162 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрационная форма</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: auto;
-            max-width: 90vw;
-        }
-        h1 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        input {
-            width: calc(100% - 30px);
-            display: inline-block;
-            padding: 10px;
-            margin-bottom: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: fit-content;
-            padding: 10px 16px;
-            background: #007BFF;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        svg {
-            display: inline-block;
-            vertical-align: text-bottom;
-            width: 24px; 
-            height: 24px;
-            fill: none;
-        }
-        svg:hover {
-            background: lightblue;
-        }
-        .result {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            max-width: 70vw;
-            overflow: scroll;
-            overflow-y: hidden;
-            vertical-align: middle;
-        }
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        #instruction {
-            margin-top: 15px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Создание идентификатора избирателя</h1>
-        <div>Пароль (вы можете его заменить): </div>
-        <input type="text" id="pwd">
-        <svg xmlns="http://www.w3.org/2000/svg" id="copyicon" onclick="copyInput(document.getElementById('pwd').value)">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path>
-        </svg>
-        <div id="error" class="error"></div>
-        <button onclick="computeHash()">Создать идентификатор</button>
-        <div id="result" class="result"></div>
-        <svg xmlns="http://www.w3.org/2000/svg" id="copyicon" onclick="copyInput(document.getElementById('result').innerText)">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z" fill="currentColor"></path>
-        </svg>
-        <div id="instruction">Сохраните пароль в тайне, поделитесь созданным идентификатором</div>
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Регистрационная форма</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background-color: #f4f4f9;
+			}
+			.container {
+				background: #fff;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				width: auto;
+				max-width: 90vw;
+			}
+			h1 {
+				font-size: 18px;
+				margin-bottom: 20px;
+				text-align: center;
+			}
+			input {
+				width: calc(100% - 30px);
+				display: inline-block;
+				padding: 10px;
+				margin-bottom: 10px;
+				margin-top: 5px;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-sizing: border-box;
+			}
+			button {
+				width: fit-content;
+				padding: 10px 16px;
+				background: #007bff;
+				border: none;
+				border-radius: 4px;
+				color: white;
+				font-size: 16px;
+				cursor: pointer;
+			}
+			button:hover {
+				background: #0056b3;
+			}
+			svg {
+				display: inline-block;
+				vertical-align: text-bottom;
+				width: 24px;
+				height: 24px;
+				fill: none;
+			}
+			svg:hover {
+				background: lightblue;
+			}
+			.result {
+				display: inline-block;
+				margin-top: 10px;
+				padding: 10px;
+				background: #f9f9f9;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				font-family: monospace;
+				white-space: pre-wrap;
+				max-width: 70vw;
+				overflow: scroll;
+				overflow-y: hidden;
+				vertical-align: middle;
+			}
+			.error {
+				color: red;
+				font-size: 14px;
+				margin-bottom: 10px;
+			}
+			.hash-block {
+				display: none;
+			}
+			#instruction {
+				margin-top: 15px;
+			}
+			#saved-password-block {
+				margin-top: 15px;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Создание идентификатора избирателя</h1>
+			<div>Пароль (вы можете его заменить):</div>
+			<input type="text" id="pwd" />
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				id="copyicon"
+				onclick="copyInput(document.getElementById('pwd').value)"
+			>
+				<path
+					fill-rule="evenodd"
+					clip-rule="evenodd"
+					d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+					fill="currentColor"
+				></path>
+			</svg>
+			<div id="error" class="error"></div>
+			<button onclick="computeHash()">Создать идентификатор</button>
+			<div class="hash-block">
+				<div id="result" class="result"></div>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					id="copyicon"
+					onclick="copyInput(document.getElementById('result').innerText)"
+				>
+					<path
+						fill-rule="evenodd"
+						clip-rule="evenodd"
+						d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+						fill="currentColor"
+					></path>
+				</svg>
+				<div id="instruction">
+					Сохраните пароль в тайне, поделитесь созданным
+					идентификатором
+				</div>
+			</div>
+			<div id="saved-password-block">
+				Последний использованный пароль:
+				<p id="saved-password"></p>
+			</div>
+		</div>
 
-    <script>
-        function copyInput(text) {
-            navigator.clipboard.writeText(text);
-        };
+		<script>
+			function retrievePassword() {
+				const cookies = document.cookie;
+				const lastPassword = cookies.split(";")[0].slice(9);
+				return lastPassword;
+			}
 
-        function generateRandomPassword() {
-            const length = crypto.getRandomValues(new Uint8Array(1))[0] % 5 + 12; // Random length between 12 and 16
-            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?";
-            const charactersLength = characters.length;
-            let password = "";
+			function savePassword(password) {
+				document.cookie = `password=${password}`;
+			}
+			function copyInput(text) {
+				navigator.clipboard.writeText(text);
+			}
 
-            const randomBuffer = new Uint8Array(length);
-            crypto.getRandomValues(randomBuffer);
+			function generateRandomPassword() {
+				const length =
+					(crypto.getRandomValues(new Uint8Array(1))[0] % 5) + 12; // Random length between 12 and 16
+				const characters =
+					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?";
+				const charactersLength = characters.length;
+				let password = "";
 
-            for (let i = 0; i < length; i++) {
-                password += characters[randomBuffer[i] % charactersLength];
-            }
-            
-            document.getElementById("pwd").value = password;
-        }
+				const randomBuffer = new Uint8Array(length);
+				crypto.getRandomValues(randomBuffer);
 
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+				for (let i = 0; i < length; i++) {
+					password += characters[randomBuffer[i] % charactersLength];
+				}
 
-        async function computeHash() {
-            const input = document.getElementById("pwd").value;
-            const error = document.getElementById("error");
-            const result = document.getElementById("result");
+				document.getElementById("pwd").value = password;
+			}
 
-            // Clear previous error or result
-            error.textContent = "";
-            result.textContent = "";
+			async function sha256(message) {
+				const msgBuffer = new TextEncoder().encode(message);
+				const hashBuffer = await crypto.subtle.digest(
+					"SHA-256",
+					msgBuffer
+				);
+				const hashArray = Array.from(new Uint8Array(hashBuffer));
+				return hashArray
+					.map((b) => b.toString(16).padStart(2, "0"))
+					.join("");
+			}
 
-            // Validate input
-            const regex = /^.{10,30}$/;
-            if (!regex.test(input)) {
-                error.textContent = "Input must be 10 to 30 characters long.";
-                return;
-            }
+			async function computeHash() {
+				const input = document.getElementById("pwd").value;
+				const error = document.getElementById("error");
+				const result = document.getElementById("result");
 
-            // Compute ten-fold SHA256 hash
-            let hash = input;
-            for (let i = 0; i < 10; i++) {
-                hash = await sha256(hash);
-            }
+				// Clear previous error or result
+				error.textContent = "";
+				result.textContent = "";
 
-            // Display the result
-            result.textContent = hash;
-        }
-        generateRandomPassword();
-        computeHash();
-    </script>
-</body>
+				// Validate input
+				const regex = /^.{10,30}$/;
+				if (!regex.test(input)) {
+					error.textContent =
+						"Input must be 10 to 30 characters long.";
+					return;
+				}
+
+				// Compute ten-fold SHA256 hash
+				let hash = input;
+				for (let i = 0; i < 10; i++) {
+					hash = await sha256(hash);
+				}
+
+				// Display the result
+				result.textContent = hash;
+				document.querySelector(".hash-block").style.display = "block";
+				savePassword(input);
+				document.querySelector("#saved-password").innerHTML = input;
+			}
+			generateRandomPassword();
+			// computeHash();
+			document.addEventListener("DOMContentLoaded", () => {
+				if (retrievePassword()) {
+					document.querySelector("#saved-password-block").style =
+						"display:block";
+					document.querySelector("#saved-password").innerHTML =
+						retrievePassword();
+				}
+			});
+		</script>
+	</body>
 </html>
