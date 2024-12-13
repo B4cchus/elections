@@ -114,7 +114,7 @@ submitBallot.onclick = async () => {
   })
   .then(responseData => {
       console.log("Response from server:", responseData);
-      submitBallot.textContent = "Отправлено!";
+      submitBallot.textContent = "Отправлено! ПИН: " + responseData.pin;
       submitBallot.style.backgroundColor = "green";
   })
   .catch(error => {
