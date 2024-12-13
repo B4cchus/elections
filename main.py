@@ -43,4 +43,4 @@ async def submit_vote(election_id: str, cds: str, vr_id: str):
     vr.value = "v: " + vr.value
     print(vr.value)
     sh.worksheet("Set-up").update_cells([vr])
-    return {"ok": true, "pin": pin, "ballot": cds}
+    return {"ok": True, "pin": pin, "ballot": cds}
