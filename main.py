@@ -39,7 +39,7 @@ async def submit_vote(election_id: str, cds: str, vr_id: str):
         raise HTTPException(status_code=404, detail="Voter not found")
     start = sh.worksheet("Results").find(election_id)
     pin = str(random.randrange(10000,99999))
-    sh.values_append("Results!"+start.address, {"value_input_option": "RAW", "values": [[pin+": "+cds]]})
+    sh.values_append("Results!"+start.address, {"value_input_option": "RAW"}, {"values": [[pin+": "+cds]]})
     vr.value = "v: " + vr.value
     print(vr.value)
     sh.worksheet("Set-up").update_cells([vr])
